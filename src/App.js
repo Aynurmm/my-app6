@@ -1,24 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+
+import './App.css'
+
+import {useState, useEffect} from 'react'
 
 function App() {
+  const [item,setItem] = useState({
+    itemName: "",
+ 
+  })
+
+
+  const [searchMyData, setSearchMyData] = useState("")
+
+
+
+const searchData = (e) =>{
+  setSearchMyData(e.target.value.toLowerCase())
+
+}
+
+
+
+
+
+
+  const [employeetData, setEmployeetData] = useState([])
+  useEffect(()=>{
+    fetch('https://5ea5ca472d86f00016b4626d.mockapi.io/brotherhood')
+    .then(res=>res.json())
+    .then(data=>{
+      setEmployeetData(data)
+    })
+  },[])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div className='App'>
+
+    <input type='text' placeholder='Search...' onChange={searchData}/>
+
+
+    {
+     employeetData.filter(e => e.name.toLowerCase().includes(searchMyData)).map((a,b)=>(
+        <div key={b}>
+        <h1>{a.name}</h1>
+      </div>
+      ))
+    }
+
+
+   </div>
+   
   );
 }
 
